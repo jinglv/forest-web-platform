@@ -29,3 +29,11 @@ TORTOISE_ORM = {
         },
     }
 }
+
+# ==========================token的配置=====================================
+# 64位秘钥
+SECRET_KEY = "8beac45e868942b7157e25a0396f36db16ea92dd6713c9ebd116c5259e3fb3d3"
+# 加密算法
+ALGORITHM = "HS256"
+# token过期时间
+TOKEN_TIMEOUT = 60 * 60 * 24 * 7
