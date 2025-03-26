@@ -1,0 +1,9 @@
+fastapi==0.115.11
+fastapi[standard]
+uvicorn==0.34.0
+tortoise-orm==0.24.2
+tortoise-orm[asyncmy]
+aerich==0.8.2
+tomlkit==0.13.2
+pyjwt==2.10.1
+passlib[bcrypt]
