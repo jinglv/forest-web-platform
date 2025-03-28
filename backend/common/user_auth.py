@@ -1,8 +1,11 @@
 # @Time：2025/3/26 14:56
 # @Author：jinglv
 """
-用户认证公共模块
+用户认证和权限校验的公共模块
+pip install pyjwt
+pip install passlib[bcrypt]
 """
+import secrets
 import time
 
 import jwt
@@ -45,6 +48,8 @@ def verify_token(token):
         return data
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="token校验失败或者无效token")
+    except Exception as e:
+        raise HTTPException(status_code=401, detail="错误token")
 
 
 def verify_password(plain_password, hashed_password):
@@ -64,3 +69,11 @@ def get_password_hash(password):
     :return:
     """
     return pwd_context.hash(password)
+
+
+def generate_secret_key():
+    """
+    生成密钥
+    :return:
+    """
+    return secrets.token_hex(64)

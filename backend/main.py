@@ -12,9 +12,9 @@ from tortoise.contrib.fastapi import register_tortoise
 from apps.users.api import router as user_router
 from common.settings import TORTOISE_ORM
 
-app = FastAPI()
+app = FastAPI(title="Forest Web测试平台", version="1.0.0", description="FastAPI")
 
-# 注册ORM模型
+# ==================注册ORM模型==================
 register_tortoise(app, config=TORTOISE_ORM, modules={"models": ["models"]})
 
 
@@ -72,7 +72,7 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
-# 注册路由
+# =================注册路由==================
 app.include_router(user_router)
 
 if __name__ == '__main__':

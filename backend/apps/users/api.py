@@ -3,7 +3,7 @@
 from fastapi import APIRouter, HTTPException
 
 from apps.users.models import UsersModel
-from apps.users.schemas import RegisterFormRequest, UserInfoResponse, LoginResponse, LoginFormRequest
+from apps.users.schemas import RegisterFormRequest, UserInfoResponse, LoginResponse, LoginFormRequest, TokenRequest
 from common import user_auth
 
 router = APIRouter(prefix="/api/users", tags=['用户模块'])
@@ -18,10 +18,10 @@ async def register(request: RegisterFormRequest):
     """
     # 判断密码是否一致
     if request.password != request.password_confirm:
-        return HTTPException(status_code=422, detail="两次密码不一致")
+        raise HTTPException(status_code=422, detail="两次密码不一致")
     # 判断用户名是否已存在
     if await UsersModel.get_or_none(username=request.username):
-        return HTTPException(status_code=422, detail="用户名已存在")
+        raise HTTPException(status_code=422, detail="用户名已存在")
     # 校验邮箱是否已存在
     if await UsersModel.get_or_none(email=request.email):
         raise HTTPException(status_code=422, detail="邮箱已存在")
@@ -45,10 +45,14 @@ async def register(request: RegisterFormRequest):
 async def login(request: LoginFormRequest):
     """
     用户登录接口
+    登录的逻辑,实现用户名、手机号、邮箱均可以作为账号登录
     :param request:
     :return:
     """
-    user = await UsersModel.get_or_none(username=request.username)
+    user_name = await UsersModel.get_or_none(username=request.username)
+    user_mobile = await UsersModel.get_or_none(mobile=request.username)
+    user_email = await UsersModel.get_or_none(email=request.username)
+    user = user_name or user_mobile or user_email
     if not user:
         raise HTTPException(status_code=422, detail="用户名或密码错误")
     if not user_auth.verify_password(request.password, user.password):
@@ -58,3 +62,26 @@ async def login(request: LoginFormRequest):
     token = user_auth.create_token(uinfo.dict())
     # 返回token 和用户信息
     return LoginResponse(token=token, user=uinfo)
+
+
+@router.post("/verify", summary="校验token", response_model=UserInfoResponse)
+def verify_token(request: TokenRequest):
+    """
+    校验token
+    :param request: 请求信息
+    :return:
+    """
+    return user_auth.verify_token(request.token)
+
+
+@router.post("/refresh", summary="刷新token", response_model=TokenRequest)
+def refresh_token(request: TokenRequest):
+    """
+    刷新token
+    :param request: 请求信息
+    :return:
+    """
+    # 校验token,获取token中的用户信息
+    userinfo = user_auth.verify_token(request.token)
+    # 生成新的token
+    return {"token": user_auth.create_token(userinfo)}

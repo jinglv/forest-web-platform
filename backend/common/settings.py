@@ -14,6 +14,7 @@ DATABASE = {
 INSTALLED_APPS = [
     'apps.users.models',
 ]
+
 # 关于tortoise的配置
 TORTOISE_ORM = {
     'connections': {
@@ -35,5 +36,5 @@ TORTOISE_ORM = {
 SECRET_KEY = "8beac45e868942b7157e25a0396f36db16ea92dd6713c9ebd116c5259e3fb3d3"
 # 加密算法
 ALGORITHM = "HS256"
-# token过期时间
+# token过期时间(7天)
 TOKEN_TIMEOUT = 60 * 60 * 24 * 7
