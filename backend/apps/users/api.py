@@ -1,9 +1,11 @@
 # @Time：2025/3/19 16:26
 # @Author：jinglv
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 from apps.users.models import UsersModel
-from apps.users.schemas import RegisterFormRequest, UserInfoResponse, LoginResponse, LoginFormRequest, TokenRequest
+from apps.users.schemas import RegisterFormRequest, UserInfoResponse, LoginResponse, LoginFormRequest, TokenRequest, \
+    Token
 from common import user_auth
 
 router = APIRouter(prefix="/api/users", tags=['用户模块'])
@@ -59,7 +61,7 @@ async def login(request: LoginFormRequest):
         raise HTTPException(status_code=422, detail="用户名或密码错误")
     uinfo = UserInfoResponse(**user.__dict__)
     # 账户名密码正确，生成token
-    token = user_auth.create_token(uinfo.dict())
+    token = user_auth.create_token(uinfo.model_dump())
     # 返回token 和用户信息
     return LoginResponse(token=token, user=uinfo)
 
@@ -85,3 +87,20 @@ def refresh_token(request: TokenRequest):
     userinfo = user_auth.verify_token(request.token)
     # 生成新的token
     return {"token": user_auth.create_token(userinfo)}
+
+
+@router.post("/token", response_model=Token, tags=["API调试"], summary="模拟登录")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    """
+    给接口文档登录生成token的api
+    :param form_data:
+    :return:
+    """
+    user = await UsersModel.get_or_none(username=form_data.username)
+    if not user:
+        raise HTTPException(status_code=422, detail="用户名或密码错误")
+    if not user_auth.verify_password(form_data.password, user.password):
+        raise HTTPException(status_code=422, detail="用户名或密码错误")
+    uinfo = UserInfoResponse(**user.__dict__)
+    token = user_auth.create_token(uinfo.model_dump())
+    return Token(access_token=token, token_type="bearer")

@@ -13,6 +13,7 @@ DATABASE = {
 # 项目中的所以应用的models
 INSTALLED_APPS = [
     'apps.users.models',
+    'apps.projects.models',
 ]
 
 # 关于tortoise的配置

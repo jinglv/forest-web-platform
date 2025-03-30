@@ -15,8 +15,8 @@ class UsersModel(models.Model):
     mobile = fields.CharField(max_length=255, description="手机号", default="")
     is_active = fields.BooleanField(default=True, description="是否激活")
     is_superuser = fields.BooleanField(default=False, description="是否超级管理员")
-    created_at = fields.DatetimeField(auto_now_add=True, description="创建时间")
-    updated_at = fields.DatetimeField(auto_now=True, description="更新时间")
+    created_time = fields.DatetimeField(auto_now_add=True, description="创建时间")
+    updated_time = fields.DatetimeField(auto_now=True, description="更新时间")
 
     def __str__(self):
         return self.username
