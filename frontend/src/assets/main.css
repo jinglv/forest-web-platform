@@ -1,35 +1,83 @@
-@import './base.css';
-
+html,
+body,
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  padding: 0;
+  margin: 0;
+  height: 100%vh;
+  font-size: 12px;
+}
+/*-------------------------------主题颜色修改----------------------------*/
+:root {
+  --el-tabs-header-height: 30px;
+  /* 主题色*/
+  --primary-color: #44e89e;
+  --secondary-color: #34495e;
+  --primary-color-line: #d9d8d8;
+  --primary-color-background: #f8f8f8;
+  /*修改elementPlus主题色*/
+  /* 主要颜色 */
+  --el-color-primary: #228b22;
+  --el-color-primary-light-9: rgb(34, 139, 34);
+  --el-color-primary-light-8: rgb(34, 139, 34);
+  --el-color-primary-light-7: rgb(34, 139, 34);
+  --el-color-primary-light-6: rgb(34, 139, 34);
+  --el-color-primary-light-5: rgb(34, 139, 34);
+  --el-color-primary-light-4: rgb(34, 139, 34);
+  --el-color-primary-light-3: rgb(34, 139, 34);
+  --el-color-primary-light-2: rgb(34, 139, 34);
+  --el-color-primary-light-1: rgb(34, 139, 34);
+  --el-color-primary-dark-1: rgb(34, 139, 34);
+  --el-color-primary-dark-2: rgb(34, 139, 34);
+  --el-color-primary-dark-3: rgb(34, 139, 34);
+  --el-color-primary-dark-4: rgb(34, 139, 34);
+  --el-color-primary-dark-5: rgb(34, 139, 34);
+  --el-color-primary-dark-6: rgb(34, 139, 34);
+  --el-color-primary-dark-7: rgb(34, 139, 34);
+  --el-color-success: #67c23a;
+  --el-color-warning: #e6a23c;
+  --el-color-danger: #f56c6c;
+  --el-color-info: #909399;
+  /*鼠标悬浮的菜单背景颜色*/
+  --el-menu-hover-bg-color: #e9ffff;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+/*---------------------------修改全局的滑块样式-----------------------*/
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+::-webkit-scrollbar-thumb {
+  background-color: var(--el-color-primary);
+  border-radius: 3px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+::-webkit-scrollbar-track {
+  background-color: var(--el-color-primary-light-9);
+  border-radius: 3px;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+/*----------------虚拟进度条样式--------------------------*/
+#nprogress .bar {
+  background: var(--el-color-primary) !important;
+  height: 5px;
+}
+
+/*----------------------------------元素拖拽样式---------------------------------------*/
+/* 拖拽中的元素样式 */
+.dragging {
+  opacity: 0.5;
+  cursor: move;
+}
+
+/* 选中元素的边框颜色 */
+.chosen {
+  border: 2px solid var(--el-color-primary);
+  background-color: var(--el-color-primary-light-9);
+}
+
+/* 幽灵元素的虚线边框 */
+.ghost {
+  opacity: 0.5;
+  background: var(--el-color-primary-light-9);
 }

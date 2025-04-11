@@ -83,3 +83,7 @@ app.use(router)
 app.mount('#app')
 
 ```
+
+## 图标图片资源下载地址
+- 阿里巴巴图标库：https://www.iconfont.cn
+- 字节图标库：https://iconpark.oceanengine.com/official
